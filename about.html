@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - TopVideos.com</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: #f8f9fa;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 3px;
+            font-family: 'Didot', 'Bodoni MT', 'Garamond', serif;
+            text-decoration: none;
+        }
+
+        /* In Development Badge */
+        .coming-soon-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            letter-spacing: 1px;
+        }
+
+        /* Traditional Clapperboard Icon */
+        .clapperboard {
+            width: 65px;
+            height: 40px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .clapperboard::before {
+            content: "";
+            position: absolute;
+            width: 65px;
+            height: 12px;
+            background: repeating-linear-gradient(
+                90deg,
+                #000 0px,
+                #000 10px,
+                #fff 10px,
+                #fff 20px
+            );
+            top: 0;
+            left: 0;
+            border-radius: 3px 3px 0 0;
+            transform: rotate(-8deg);
+            transform-origin: bottom left;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .clapperboard::after {
+            content: "";
+            position: absolute;
+            width: 65px;
+            height: 28px;
+            background: #1a1a1a;
+            bottom: 0;
+            left: 0;
+            border-radius: 3px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Navigation Icons */
+        .nav-icons {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            justify-content: center;
+            padding: 20px 0;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .nav-item {
+            text-align: center;
+            text-decoration: none;
+            color: #999;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: not-allowed;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+            opacity: 1;
+            background: #e9ecef;
+            pointer-events: auto;
+            cursor: default;
+        }
+
+        .nav-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 8px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: block;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: #f8f9fa;
+            margin: 40px 0;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .page-title h1 {
+            font-size: 3rem;
+            color: #000;
+            margin-bottom: 15px;
+        }
+
+        .page-title p {
+            font-size: 1.3rem;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Content Section */
+        .content-section {
+            background: #f8f9fa;
+            padding: 50px 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .content-section h2 {
+            font-size: 2.3rem;
+            color: #000;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .content-section h3 {
+            font-size: 1.8rem;
+            color: #667eea;
+            margin: 30px 0 15px;
+        }
+
+        .content-section p {
+            font-size: 1.15rem;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .content-section ul {
+            margin: 20px 0 20px 40px;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .content-section li {
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .column-box {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+        }
+
+        .column-box h3 {
+            color: #667eea;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+        }
+
+        /* Feature Boxes */
+        .feature-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .feature-box {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-box-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .feature-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .feature-box p {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .highlight-box h3 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .highlight-box p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.2rem;
+            margin-bottom: 0;
+        }
+
+        /* Network Bar */
+        .network-bar {
+            background: #1a1a1a;
+            color: #ccc;
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 400;
+        }
+
+        .network-bar a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 8px;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .network-bar a:hover {
+            color: #fff;
+        }
+
+        .separator {
+            color: #666;
+            margin: 0 8px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            margin-top: 40px;
+            border-radius: 20px;
+        }
+
+        .footer-main {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .footer-main a {
+            color: #999;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 400;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .footer-tagline {
+            margin-top: 10px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .page-title h1 {
+                font-size: 2rem;
+            }
+
+            .content-section {
+                padding: 30px 20px;
+            }
+
+            .content-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+                letter-spacing: 1px;
+            }
+
+            .header-content {
+                flex-wrap: wrap;
+            }
+
+            .coming-soon-badge {
+                font-size: 0.75rem;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <span class="clapperboard"></span>
+                    TopVideos.com
+                </a>
+                <div class="coming-soon-badge">In Development!</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Navigation Icons -->
+        <div class="nav-icons">
+            <span class="nav-item active">
+                <span class="nav-icon">ℹ️</span>
+                <span class="nav-label">About</span>
+            </span>
+            <span class="nav-item">
+                <span class="nav-icon">🚀</span>
+                <span class="nav-label">Join</span>
+            </span>
+            <span class="nav-item">
+                <span class="nav-icon">⭐</span>
+                <span class="nav-label">Reviews</span>
+            </span>
+            <span class="nav-item">
+                <span class="nav-icon">📺</span>
+                <span class="nav-label">Watch</span>
+            </span>
+        </div>
+
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>About TopVideos.com</h1>
+            <p>Empowering creators and audiences in the age of AI-assisted video production</p>
+        </div>
+
+        <!-- Our Vision -->
+        <div class="content-section">
+            <h2>Our Vision</h2>
+            <p>TopVideos.com is pioneering the future of video content creation and distribution. We believe that artificial intelligence is not replacing human creativity—it's amplifying it. Our platform empowers storytellers, filmmakers, educators, and artists to bring their visions to life with unprecedented ease and quality.</p>
+            <p>We're building a community where talented creators can harness cutting-edge AI tools to produce professional-quality videos, while viewers discover an ever-expanding universe of original content spanning every genre and format imaginable.</p>
+            
+            <div class="highlight-box">
+                <h3>The Miracle of Text to Video</h3>
+                <p>From a simple description to a fully-realized video—we're making the impossible possible, one frame at a time.</p>
+            </div>
+        </div>
+
+        <!-- What We Do -->
+        <div class="content-section">
+            <h2>What We Do</h2>
+            <p>TopVideos.com is a comprehensive platform that serves both creators and viewers:</p>
+            
+            <div class="two-column">
+                <div class="column-box">
+                    <h3>🎬 For Creators</h3>
+                    <ul>
+                        <li>Access to state-of-the-art AI video generation tools</li>
+                        <li>Post and distribute your video creations</li>
+                        <li>Monetize your content through direct sales</li>
+                        <li>Build your audience and fanbase</li>
+                        <li>Retain creative control and ownership</li>
+                        <li>Collaborate with other creators</li>
+                    </ul>
+                </div>
+                
+                <div class="column-box">
+                    <h3>📺 For Viewers</h3>
+                    <ul>
+                        <li>Unlimited access to diverse video content</li>
+                        <li>Multiple channels across all genres</li>
+                        <li>Video shorts to full-length features</li>
+                        <li>Series, documentaries, and educational content</li>
+                        <li>Personalized recommendations</li>
+                        <li>Support independent creators directly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Types -->
+        <div class="content-section">
+            <h2>Types of Content</h2>
+            <p>Our platform supports a wide range of video formats and genres:</p>
+            
+            <div class="feature-boxes">
+                <div class="feature-box">
+                    <span class="feature-box-icon">⚡</span>
+                    <h4>Video Shorts</h4>
+                    <p>Quick, engaging clips from 15 seconds to 5 minutes perfect for viral content and quick entertainment.</p>
+                </div>
+                
+                <div class="feature-box">
+                    <span class="feature-box-icon">📺</span>
+                    <h4>Video Series</h4>
+                    <p>Episodic content with ongoing storylines, characters, and narratives that keep audiences coming back.</p>
+                </div>
+                
+                <div class="feature-box">
+                    <span class="feature-box-icon">🎬</span>
+                    <h4>Movies</h4>
+                    <p>Full-length feature films across all genres from independent creators and AI-assisted filmmakers.</p>
+                </div>
+                
+                <div class="feature-box">
+                    <span class="feature-box-icon">📖</span>
+                    <h4>Documentaries</h4>
+                    <p>In-depth explorations of real-world topics, bringing education and inspiration to viewers.</p>
+                </div>
+                
+                <div class="feature-box">
+                    <span class="feature-box-icon">🎓</span>
+                    <h4>Educational</h4>
+                    <p>Tutorials, courses, and how-to guides that help people learn new skills and expand their knowledge.</p>
+                </div>
+                
+                <div class="feature-box">
+                    <span class="feature-box-icon">🎨</span>
+                    <h4>Animation</h4>
+                    <p>Animated content in various styles from traditional 2D to cutting-edge AI-generated 3D worlds.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Technology -->
+        <div class="content-section">
+            <h2>The Technology</h2>
+            <p>Our platform leverages the latest advances in artificial intelligence and machine learning to make video production accessible to everyone:</p>
+            
+            <h3>AI-Assisted Creation</h3>
+            <p>Our tools don't replace human creativity—they enhance it. Creators maintain full artistic control while AI handles the technical heavy lifting, from rendering complex scenes to animating characters with lifelike precision.</p>
+            
+            <h3>Text-to-Video Generation</h3>
+            <p>Transform written descriptions into fully-realized video content. Our advanced models understand context, emotion, and narrative structure to bring your words to visual life.</p>
+            
+            <h3>Professional Quality Output</h3>
+            <p>All videos produced through our platform meet professional broadcast standards, with options for 4K resolution, HDR color grading, and cinematic frame rates.</p>
+            
+            <h3>Rapid Production</h3>
+            <p>What once took weeks or months can now be accomplished in hours or days. Our AI accelerates the production pipeline without sacrificing quality.</p>
+        </div>
+
+        <!-- How It Works -->
+        <div class="content-section">
+            <h2>How It Works</h2>
+            
+            <h3>For Creators:</h3>
+            <p><strong>1. Create</strong> - Use our AI-powered tools to generate videos from text descriptions, images, or existing footage. Fine-tune every aspect with our intuitive editing suite.</p>
+            <p><strong>2. Post</strong> - Upload your finished videos to the platform, add descriptions, tags, and choose your distribution settings.</p>
+            <p><strong>3. Monetize</strong> - Set your pricing model—subscription, rental, purchase, or ad-supported—and earn revenue from your creative work.</p>
+            <p><strong>4. Engage</strong> - Build your audience, respond to feedback, and create series that keep viewers coming back.</p>
+            
+            <h3>For Viewers:</h3>
+            <p><strong>1. Discover</strong> - Browse through channels, categories, and personalized recommendations to find content you love.</p>
+            <p><strong>2. Watch</strong> - Stream high-quality videos instantly on any device with our adaptive streaming technology.</p>
+            <p><strong>3. Support</strong> - Purchase, subscribe, or support creators directly to help them continue making great content.</p>
+            <p><strong>4. Engage</strong> - Rate, review, and share your favorite videos with the community.</p>
+        </div>
+
+        <!-- Our Community -->
+        <div class="content-section">
+            <h2>Our Community</h2>
+            <p>TopVideos.com is more than just a platform—it's a community of creators and viewers who share a passion for innovative storytelling and visual arts.</p>
+            <p>We believe in:</p>
+            <ul>
+                <li><strong>Creative Freedom</strong> - Creators own their work and control their distribution</li>
+                <li><strong>Fair Compensation</strong> - Artists deserve to be paid fairly for their creativity</li>
+                <li><strong>Diversity of Content</strong> - Every voice and vision deserves to be heard</li>
+                <li><strong>Quality Standards</strong> - We maintain high standards while remaining accessible</li>
+                <li><strong>Innovation</strong> - We're constantly evolving with the latest technology</li>
+                <li><strong>Transparency</strong> - Clear policies and open communication with our community</li>
+            </ul>
+        </div>
+
+        <!-- Join Us -->
+        <div class="content-section">
+            <h2>Join the Revolution</h2>
+            <p>We're in the early stages of building something extraordinary. TopVideos.com represents a paradigm shift in how video content is created, distributed, and consumed.</p>
+            <p>Whether you're a seasoned filmmaker looking to accelerate your production process, a storyteller who's been waiting for the right tools to bring your vision to life, or a viewer hungry for fresh, innovative content—we invite you to be part of this journey.</p>
+            
+            <div class="highlight-box">
+                <h3>In Development</h3>
+                <p>We're working hard to bring TopVideos.com to life. Sign up for updates to be notified when we launch and get exclusive early access to our platform and tools.</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="network-bar">
+                Part of the TopPicks.com Network: 
+                <a href="https://TopMovies.com">TopMovies.com</a><span class="separator">|</span><a href="https://TopBooks.com">TopBooks.com</a><span class="separator">|</span><a href="https://TopHits.com">TopHits.com</a><span class="separator">|</span><a href="https://TopVideos.com">TopVideos.com</a>
+            </div>
+            
+            <p class="footer-main">
+                &copy; 2026 TopVideos.com - AI-Generated Videos for Everyone
+                <span>Terms</span>
+                <span>Privacy</span>
+            </p>
+            <p class="footer-tagline">Unleash Your Imagination</p>
+        </footer>
+    </div>
+</body>
+</html>
