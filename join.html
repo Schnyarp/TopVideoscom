@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join - TopVideos.com</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: #f8f9fa;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 3px;
+            font-family: 'Didot', 'Bodoni MT', 'Garamond', serif;
+            text-decoration: none;
+        }
+
+        /* In Development Badge */
+        .coming-soon-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            letter-spacing: 1px;
+        }
+
+        /* Traditional Clapperboard Icon */
+        .clapperboard {
+            width: 65px;
+            height: 40px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .clapperboard::before {
+            content: "";
+            position: absolute;
+            width: 65px;
+            height: 12px;
+            background: repeating-linear-gradient(
+                90deg,
+                #000 0px,
+                #000 10px,
+                #fff 10px,
+                #fff 20px
+            );
+            top: 0;
+            left: 0;
+            border-radius: 3px 3px 0 0;
+            transform: rotate(-8deg);
+            transform-origin: bottom left;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .clapperboard::after {
+            content: "";
+            position: absolute;
+            width: 65px;
+            height: 28px;
+            background: #1a1a1a;
+            bottom: 0;
+            left: 0;
+            border-radius: 3px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Navigation Icons */
+        .nav-icons {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            justify-content: center;
+            padding: 20px 0;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .nav-item {
+            text-align: center;
+            text-decoration: none;
+            color: #999;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: not-allowed;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+            opacity: 1;
+            background: #e9ecef;
+            pointer-events: auto;
+            cursor: default;
+        }
+
+        .nav-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 8px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: block;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: #f8f9fa;
+            margin: 40px 0;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .page-title h1 {
+            font-size: 3rem;
+            color: #000;
+            margin-bottom: 15px;
+        }
+
+        .page-title p {
+            font-size: 1.3rem;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Content Section */
+        .content-section {
+            background: #f8f9fa;
+            padding: 50px 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .content-section h2 {
+            font-size: 2.3rem;
+            color: #000;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .content-section p {
+            font-size: 1.15rem;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: center;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Membership Types */
+        .membership-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .membership-card {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e0e0e0;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .membership-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .membership-card.featured {
+            border: 3px solid #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        }
+
+        .membership-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .membership-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .membership-card h3 {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .membership-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #000;
+            margin: 20px 0;
+        }
+
+        .membership-price span {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: normal;
+        }
+
+        .membership-card ul {
+            text-align: left;
+            margin: 25px 0;
+            list-style: none;
+        }
+
+        .membership-card li {
+            padding: 10px 0;
+            color: #555;
+            font-size: 1.05rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .membership-card li:last-child {
+            border-bottom: none;
+        }
+
+        .membership-card li::before {
+            content: "✓";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .join-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            margin-top: 20px;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Benefits Grid */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .benefit-box {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .benefit-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .benefit-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .benefit-box p {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .highlight-box h3 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .highlight-box p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.2rem;
+            margin-bottom: 0;
+        }
+
+        /* Signup Form */
+        .signup-form {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 40px auto;
+            border: 2px solid #e0e0e0;
+        }
+
+        .signup-form h3 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+            background: #f8f9fa;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: #ccc;
+            color: #666;
+            padding: 15px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: not-allowed;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Network Bar */
+        .network-bar {
+            background: #1a1a1a;
+            color: #ccc;
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 400;
+        }
+
+        .network-bar a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 8px;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .network-bar a:hover {
+            color: #fff;
+        }
+
+        .separator {
+            color: #666;
+            margin: 0 8px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            margin-top: 40px;
+            border-radius: 20px;
+        }
+
+        .footer-main {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .footer-main a {
+            color: #999;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 400;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .footer-tagline {
+            margin-top: 10px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .page-title h1 {
+                font-size: 2rem;
+            }
+
+            .content-section {
+                padding: 30px 20px;
+            }
+
+            .content-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+                letter-spacing: 1px;
+            }
+
+            .header-content {
+                flex-wrap: wrap;
+            }
+
+            .coming-soon-badge {
+                font-size: 0.75rem;
+                padding: 6px 12px;
+            }
+
+            .membership-types {
+                grid-template-columns: 1fr;
+            }
+
+            .signup-form {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <span class="clapperboard"></span>
+                    TopVideos.com
+                </a>
+                <div class="coming-soon-badge">In Development!</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Navigation Icons -->
+        <div class="nav-icons">
+            <span class="nav-item">
+                <span class="nav-icon">ℹ️</span>
+                <span class="nav-label">About</span>
+            </span>
+            <span class="nav-item active">
+                <span class="nav-icon">🚀</span>
+                <span class="nav-label">Join</span>
+            </span>
+            <span class="nav-item">
+                <span class="nav-icon">⭐</span>
+                <span class="nav-label">Reviews</span>
+            </span>
+            <span class="nav-item">
+                <span class="nav-icon">📺</span>
+                <span class="nav-label">Watch</span>
+            </span>
+        </div>
+
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>Join TopVideos.com</h1>
+            <p>Become part of the AI-assisted video revolution as a creator or viewer</p>
+        </div>
+
+        <!-- Membership Introduction -->
+        <div class="content-section">
+            <h2>Choose Your Path</h2>
+            <p>Whether you're a creator ready to bring your video visions to life or a viewer looking for unlimited access to innovative content, we have the perfect membership for you.</p>
+        </div>
+
+        <!-- Membership Types -->
+        <div class="content-section">
+            <div class="membership-types">
+                <!-- Viewer Membership -->
+                <div class="membership-card">
+                    <span class="membership-icon">📺</span>
+                    <h3>Viewer</h3>
+                    <div class="membership-price">Free</div>
+                    <ul>
+                        <li>Browse all content</li>
+                        <li>Watch ad-supported videos</li>
+                        <li>Create watchlists</li>
+                        <li>Rate and review content</li>
+                        <li>Follow favorite creators</li>
+                        <li>Access to free content library</li>
+                    </ul>
+                    <span class="join-button">Join as Viewer</span>
+                </div>
+
+                <!-- Premium Viewer Membership -->
+                <div class="membership-card featured">
+                    <span class="membership-badge">MOST POPULAR</span>
+                    <span class="membership-icon">⭐</span>
+                    <h3>Premium Viewer</h3>
+                    <div class="membership-price">$9.99<span>/month</span></div>
+                    <ul>
+                        <li>Ad-free viewing experience</li>
+                        <li>Unlimited streaming in 4K</li>
+                        <li>Early access to new releases</li>
+                        <li>Exclusive premium content</li>
+                        <li>Download for offline viewing</li>
+                        <li>Support creators directly</li>
+                        <li>Priority customer support</li>
+                    </ul>
+                    <span class="join-button">Go Premium</span>
+                </div>
+
+                <!-- Creator Membership -->
+                <div class="membership-card">
+                    <span class="membership-icon">🎬</span>
+                    <h3>Creator</h3>
+                    <div class="membership-price">$29.99<span>/month</span></div>
+                    <ul>
+                        <li>All Premium Viewer benefits</li>
+                        <li>Access to AI video tools</li>
+                        <li>Unlimited video uploads</li>
+                        <li>Monetize your content</li>
+                        <li>Analytics dashboard</li>
+                        <li>Custom creator channel</li>
+                        <li>Collaboration tools</li>
+                        <li>80% revenue share</li>
+                    </ul>
+                    <span class="join-button">Become a Creator</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Creator Benefits -->
+        <div class="content-section">
+            <h2>Creator Benefits</h2>
+            <p>As a TopVideos.com creator, you'll have access to professional-grade tools and a platform designed to help you succeed.</p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-box">
+                    <span class="benefit-icon">🤖</span>
+                    <h4>AI-Powered Tools</h4>
+                    <p>Access cutting-edge text-to-video generation, character creation, scene building, and more.</p>
+                </div>
+                
+                <div class="benefit-box">
+                    <span class="benefit-icon">💰</span>
+                    <h4>Monetization</h4>
+                    <p>Earn revenue through subscriptions, rentals, purchases, and ad revenue with an 80% creator share.</p>
+                </div>
+                
+                <div class="benefit-box">
+                    <span class="benefit-icon">📊</span>
+                    <h4>Analytics</h4>
+                    <p>Track views, engagement, revenue, and audience demographics with detailed analytics.</p>
+                </div>
+                
+                <div class="benefit-box">
+                    <span class="benefit-icon">🎨</span>
+                    <h4>Creative Control</h4>
+                    <p>You own your content and maintain complete creative control over your work.</p>
+                </div>
+                
+                <div class="benefit-box">
+                    <span class="benefit-icon">🌐</span>
+                    <h4>Global Reach</h4>
+                    <p>Distribute your videos to a worldwide audience through our platform.</p>
+                </div>
+                
+                <div class="benefit-box">
+                    <span class="benefit-icon">🤝</span>
+                    <h4>Collaboration</h4>
+                    <p>Connect and collaborate with other creators to build ambitious projects.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Viewer Benefits -->
+        <div class="content-section">
+            <h2>Viewer Benefits</h2>
+            <p>Discover an ever-expanding universe of AI-assisted video content across every genre imaginable.</p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-box">
+                    <span class="benefit-icon">🎬</span>
+                    <h4>Diverse Content</h4>
+                    <p>From shorts to features, documentaries to series—thousands of videos to explore.</p>
+                </div>
+                
+                <div class="benefit-box">
+                    <span class="benefit-icon">🎯</span>
+                    <h4>Personalized</h4>
+                    <p>Get recommendations tailored to your interests and viewing history.</p>
+                </div>
+                
+                <div class="benefit-box">
+                    <span class="benefit-icon">📱</span>
+                    <h4>Any Device</h4>
+                    <p>Watch on your TV, computer, tablet, or smartphone with seamless streaming.</p>
+                </div>
+                
+                <div class="benefit-box">
+                    <span class="benefit-icon">⚡</span>
+                    <h4>New Content Daily</h4>
+                    <p>Fresh videos added constantly as creators upload their latest creations.</p>
+                </div>
+                
+                <div class="benefit-box">
+                    <span class="benefit-icon">💎</span>
+                    <h4>Premium Quality</h4>
+                    <p>All videos meet professional broadcast standards with 4K options available.</p>
+                </div>
+                
+                <div class="benefit-box">
+                    <span class="benefit-icon">❤️</span>
+                    <h4>Support Creators</h4>
+                    <p>Your subscription directly supports independent creators and artists.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="content-section">
+            <div class="highlight-box">
+                <h3>Early Access Signup</h3>
+                <p>We're currently in development! Sign up below to be notified when we launch and receive exclusive early access to the platform, special founding member pricing, and bonus AI tool credits.</p>
+            </div>
+        </div>
+
+        <!-- Signup Form -->
+        <div class="signup-form">
+            <h3>Get Early Access</h3>
+            <form>
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" disabled placeholder="Your name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" disabled placeholder="your@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="membership">I'm interested in:</label>
+                    <select id="membership" name="membership" disabled>
+                        <option value="">Select membership type</option>
+                        <option value="viewer">Viewer (Free)</option>
+                        <option value="premium">Premium Viewer ($9.99/month)</option>
+                        <option value="creator">Creator ($29.99/month)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="interest">What interests you most?</label>
+                    <textarea id="interest" name="interest" disabled placeholder="Tell us about the types of videos you want to create or watch..."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-button" disabled>Join Waitlist</button>
+            </form>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="content-section">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div style="max-width: 800px; margin: 30px auto; text-align: left;">
+                <h3 style="color: #667eea; margin-top: 25px; margin-bottom: 10px;">When will TopVideos.com launch?</h3>
+                <p>We're currently in active development and plan to launch in late 2026. Sign up for early access to be among the first to join when we go live.</p>
+                
+                <h3 style="color: #667eea; margin-top: 25px; margin-bottom: 10px;">Can I upgrade or downgrade my membership?</h3>
+                <p>Yes! You can change your membership level at any time. Upgrades take effect immediately, while downgrades occur at the end of your current billing cycle.</p>
+                
+                <h3 style="color: #667eea; margin-top: 25px; margin-bottom: 10px;">Do I need technical skills to create videos?</h3>
+                <p>No! Our AI-powered tools are designed to be intuitive and accessible to everyone, from complete beginners to professional filmmakers.</p>
+                
+                <h3 style="color: #667eea; margin-top: 25px; margin-bottom: 10px;">Who owns the videos I create?</h3>
+                <p>You do! Creators retain full ownership and rights to all content they produce using our platform.</p>
+                
+                <h3 style="color: #667eea; margin-top: 25px; margin-bottom: 10px;">What's the revenue share for creators?</h3>
+                <p>Creators receive 80% of all revenue generated from their content, with 20% going to platform maintenance and development.</p>
+                
+                <h3 style="color: #667eea; margin-top: 25px; margin-bottom: 10px;">Can I cancel my membership?</h3>
+                <p>Yes, you can cancel anytime. You'll continue to have access until the end of your current billing period.</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="network-bar">
+                Part of the TopPicks.com Network: 
+                <a href="https://TopMovies.com">TopMovies.com</a><span class="separator">|</span><a href="https://TopBooks.com">TopBooks.com</a><span class="separator">|</span><a href="https://TopHits.com">TopHits.com</a><span class="separator">|</span><a href="https://TopVideos.com">TopVideos.com</a>
+            </div>
+            
+            <p class="footer-main">
+                &copy; 2026 TopVideos.com - AI-Generated Videos for Everyone
+                <span>Terms</span>
+                <span>Privacy</span>
+            </p>
+            <p class="footer-tagline">Unleash Your Imagination</p>
+        </footer>
+    </div>
+</body>
+</html>
